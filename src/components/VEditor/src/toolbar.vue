@@ -10,7 +10,9 @@
 <script>
 import classNames from 'classnames'
 import emojiList from './emojiList.js'
-import { Tooltip, Popover, Icon } from 'ant-design-vue'
+import Vue from 'vue'
+import { Tooltip, Popover, Icon, Tabs, Input } from 'ant-design-vue'
+
 const COLORS = [
   '#E53333', '#E56600', '#FF9900',
   '#64451D', '#DFC5A4', '#FFE500',
@@ -27,8 +29,11 @@ const EMOJI_DEFAULT_HEIGHT = 24
 const EMOJI_COSTOM_WIDTH = 74
 const EMOJI_COSTOM_HEIGHT = 74
 
+Vue.use(Tabs)
+
 export default {
   components: {
+    Input,
     Icon,
     Tooltip,
     Popover
@@ -182,7 +187,7 @@ export default {
     genCustomEmoji (data) {
       if (!(data && data.length)) return
 
-      const sortedData = data.sort((a, b) => {
+      const sortedData = data.slice().sort((a, b) => {
         if (typeof a.id !== 'number' || typeof b.id !== 'number') {
           return 0
         } else {
@@ -243,6 +248,10 @@ export default {
         this.$emit('saveSelectionFormat')
       }
     },
+    handleIVSearchChange (e) {
+      const value = e.target.value
+      this.curIVSearchValue = value || ''
+    },
     getModuleHTML (mType, key) {
       const {
         iconPrefix,
@@ -265,7 +274,6 @@ export default {
         mType = Object.keys(obj)[0]
         mValue = obj[mType]
       }
-
       // 处理定制的链接模块
       if (mType in customLink) {
         const customModule = customLink[mType] || {}
@@ -301,7 +309,7 @@ export default {
           filteredValueList = this.curInsertValueList.filter((item) => {
             return (
               item.title &&
-              item.title.toLowerCase().indexOf(this.state.curIVSearchValue.toLowerCase()) > -1
+              item.title.toLowerCase().indexOf(this.curIVSearchValue.toLowerCase()) > -1
             )
           })
         }
@@ -314,14 +322,14 @@ export default {
                   <Input
                     placeholder={customModule.searchPlaceholder ? customModule.searchPlaceholder : '请输入关键字'}
                     suffix={
-                      this.state.curIVSearchValue
+                      this.curIVSearchValue
                         ? <Icon
                           class="insert-value-icon-clear"
                           type="close-circle-fill"
                           onClick={this.handleClearIVSearch}
                         /> : null
                     }
-                    value={this.state.curIVSearchValue}
+                    value={this.curIVSearchValue}
                     onChange={this.handleIVSearchChange}
                   />
                 </div> : null
@@ -557,31 +565,31 @@ export default {
             )
             if (customEmoji && customEmoji.length) {
               const tabPanes = [
-                <TabPane tab="默认表情" key="emoji_default">
+                <a-tab-pane tab="默认表情" key="emoji_default">
                   <div class="emoji-ctner">
                     <div class="emoji-con" onClick={(e) => this.$emit('handleInsertEmoji', e)}>
                       {this.defaultEmojis()}
                     </div>
                   </div>
-                </TabPane>
+                </a-tab-pane>
               ]
 
               customEmoji.forEach((item, index) => {
                 tabPanes.push(
-                  <TabPane tab={item.name} key={'custom_emoji_' + index}>
+                  <a-tab-pane tab={item.name} key={'custom_emoji_' + index}>
                     <div class="emoji-ctner">
                       <div class="emoji-con" onClick={(e) => this.$emit('handleInsertEmoji', e)}>
                         {this.genCustomEmoji(item.data)}
                       </div>
                     </div>
-                  </TabPane>
+                  </a-tab-pane>
                 )
               })
 
               content = (
-                <Tabs defaultActiveKey="emoji_default">
+                <a-tabs defaultActiveKey="emoji_default" size="small">
                   {tabPanes}
-                </Tabs>
+                </a-tabs>
               )
             }
 

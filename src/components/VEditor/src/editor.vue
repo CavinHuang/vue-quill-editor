@@ -75,7 +75,7 @@
       <div className="tip" v-if="insertAttachmentTip">{{ insertAttachmentTip }}</div>
     </a-modal>
 
-    <div class="fishd-richeditor" ref="container">
+    <div class="fishd-richeditor" :class="{ resizable: resizable }" ref="container">
       <slot name="toolbar">
         <custom-toolbar
           ref="toolBarRef"
@@ -89,7 +89,7 @@
           @handleFormatColor="handleFormatColor"
           @handleFormatBackground="handleFormatBackground"
           @handleFormatSize="handleFormatSize"
-          @handleInsertValue="handleInsertValue"
+          :handleInsertValue="handleInsertValue"
           :popoverPlacement="popoverPlacement"
           :tooltipPlacement="tooltipPlacement"
           @getPopupContainer="getPopupContainer"
@@ -287,6 +287,10 @@ export default {
       type: Object,
       default: () => ({}),
       required: false
+    },
+    resizable: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -454,7 +458,7 @@ export default {
       },
       // 处理定制的插入值
       customInsertValue: (value) => {
-        const quill = this.getEditor()
+        const quill = this.editorInstance
         const range = quill.getSelection()
         const mValue = JSON.parse(value)
 
@@ -479,8 +483,8 @@ export default {
       const { placeholder, fileDrop, customDropFile, imageDrop, customDropImage, pastePlainText } = this
       if (this.editorInstance) return false
       if (this.$refs.editor && this.$refs.toolBarRef.$el) {
+        this.initCustomLink()
         const moduleOpts = {
-          bounds: this.$refs.container,
           modules: {
             toolbar: {
               container: this.$refs.toolBarRef.$el,
@@ -509,16 +513,54 @@ export default {
             pastePlainText: true
           }
         }
-
         const editorOptions = Object.assign({}, moduleOpts, this.options)
         this.editorInstance = new Quill(this.$refs.editor, editorOptions)
-
         this.editorInstance.getHTML = function () { return _this.formatOutputHTML(this.editorInstance.root.innerHTML) }
         this.editorInstance.getRawHTML = function () { return _this.editorInstance.root.innerHTML }
         this.editorInstance.isEmptyContents = function () { return _this.isEmptyContents(this.editorInstance) }
         this.hookEditor(this.editorInstance)
         this.setEditorContents(this.editorInstance, this.editorValue)
         this.$emit('init', this.editorInstance)
+      }
+    },
+    initCustomLink () {
+      if (this.customLink) {
+        // 处理定制的超链接
+        Object.keys(this.customLink).forEach((moduleName) => {
+          this.handlers[`${moduleName}Entry`] = () => {
+            const range = this.editorInstance.getSelection()
+            const url = this.customLink[moduleName].url
+            if (range.length !== 0) {
+              // 附件不能设置超链接
+              const [link] = this.editorInstance.scroll.descendant(LinkBlot, range.index)
+              if (link && link.domNode.dataset.qlLinkType === 'attachment') {
+                return
+              }
+
+              if (url) {
+                // 异步获取URL
+                if (Object.prototype.toString.call(url) === '[object Function]') {
+                  const format = this.editorInstance.getFormat()
+                  const prevValue = format && format.link && format.link.url
+
+                  url((value) => {
+                    this.editorInstance.format('link', {
+                      type: `${moduleName}Entry`,
+                      url: value
+                    })
+                  }, prevValue)
+                } else {
+                  this.editorInstance.format('link', {
+                    type: `${moduleName}Entry`,
+                    url
+                  })
+                }
+              }
+            } else {
+              message.error('没有选中文本')
+            }
+          }
+        })
       }
     },
     formatFontTag (value) {
@@ -677,7 +719,6 @@ export default {
       }
       return null
     },
-    handleInsertValue () {},
     handleLinkModalOk () {
       const el = this.$refs.linkModalInputRef.$el
       const val = el.value.trim()
@@ -785,7 +826,7 @@ export default {
       let val = null
 
       if (this.$refs.videoModalInputRef) {
-        val = this.$refs.videoModalInputRef.input.value.trim()
+        val = this.$refs.videoModalInputRef.$el.value.trim()
       }
 
       if (val) {
@@ -808,7 +849,7 @@ export default {
           src: val
         })
 
-        this.$refs.videoModalInputRef && (this.$refs.videoModalInputRef.input.value = '')
+        this.$refs.videoModalInputRef && (this.$refs.videoModalInputRef.$el.value = '')
 
         this.editorValue = quill.getRawHTML()
         this.showVideoModal = false
@@ -887,6 +928,24 @@ export default {
           this.$refs.toolBarRef.$el.appendChild(fileInput)
         }
         fileInput.click()
+      }
+    },
+    handleInsertValue (e) {
+      const toolbarCtner = this.$refs.toolBarRef.$el
+      const target = e.target
+
+      if (target.classList.value.indexOf('insert-value-item') > -1 && target.hasAttribute('value')) {
+        let el = toolbarCtner.querySelector('button.ql-customInsertValue[data-role="customInsertValue"]')
+        if (el == null) {
+          el = document.createElement('button')
+          toolbarCtner.querySelector('.custom-insert-value').appendChild(el)
+        }
+
+        el.setAttribute('type', 'button')
+        el.setAttribute('data-role', 'customInsertValue')
+        el.setAttribute('value', target.getAttribute('value'))
+        el.classList.add('ql-customInsertValue', 'hide')
+        el.click()
       }
     },
     insertVideo (rangeIndex, attrs) {
@@ -1023,7 +1082,6 @@ export default {
       // let { toolbarCtner } = this.state;
       const { onSelectionChange } = this
       onSelectionChange && onSelectionChange(nextSelection, source, editor)
-
       const quill = this.editorInstance
       if (!quill) return
 
@@ -1063,7 +1121,11 @@ export default {
           tooltip.preview.setAttribute('href', preview)
           // 需要在显示后设置位置
           this.handleShowTooltip(tooltip.root)
-          this.handleTooltipPosition(tooltip, quill.getBounds(tooltip.linkRange))
+          this.handleTooltipPosition(tooltip, quill.getBounds({
+            index: nextSelection.index - offset,
+            length:
+              link.length()
+          }))
           return
         }
       }
@@ -1102,8 +1164,7 @@ export default {
       }
       if (rootBounds.bottom > containerBounds.bottom) {
         const height = rootBounds.bottom - rootBounds.top
-        const verticalShift = reference.bottom - reference.top + height
-        tooltip.root.style.top = (top - verticalShift) + 'px'
+        tooltip.root.style.top = (top + height - tooltip.quill.root.scrollTop) + 'px'
         tooltip.root.classList.add('ql-flip')
       }
       return shift
