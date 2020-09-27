@@ -107,28 +107,15 @@
 <script>
 import Quill from './quill'
 import CustomToolbar from './toolbar'
-import CustomSizeBlot from './formats/size.js'
-import EmojiBlot from './formats/emoji.js'
 import LinkBlot from './formats/link.js'
-import ImageBlot from './formats/image.js'
-import VideoBlot from './formats/video.js'
-import ImageDrop from './modules/imageDrop.js'
-import FileDrop from './modules/fileDrop.js'
 import PlainClipboard from './modules/plainClipboard.js'
 import { Button, Input, message, Modal, Radio } from 'ant-design-vue'
 import editorMixin from './editorMixin'
 import Vue from 'vue'
-
+import './plugins'
 import '../style/index.less'
 const isEqual = require('lodash/isEqual')
-
-Quill.register(EmojiBlot)
-Quill.register(LinkBlot)
-Quill.register(ImageBlot)
-Quill.register(CustomSizeBlot)
-Quill.register(VideoBlot)
-Quill.register('modules/imageDrop', ImageDrop, true)
-Quill.register('modules/fileDrop', FileDrop, true)
+const merge = require('lodash/merge')
 
 Vue.use(Modal).use(Input).use(Button).use(Radio)
 
@@ -259,7 +246,7 @@ export default {
           ['link', 'bold', 'italic', 'underline'],
           ['color', 'background'],
           [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
-          ['size'],
+          ['size', 'lineheight'],
           [{ list: 'ordered' }, { list: 'bullet' }],
           ['emoji'],
           ['image'],
@@ -513,7 +500,7 @@ export default {
             pastePlainText: true
           }
         }
-        const editorOptions = Object.assign({}, moduleOpts, this.options)
+        const editorOptions = merge(moduleOpts, this.options)
         this.editorInstance = new Quill(this.$refs.editor, editorOptions)
         this.editorInstance.getHTML = function () { return _this.formatOutputHTML(this.editorInstance.root.innerHTML) }
         this.editorInstance.getRawHTML = function () { return _this.editorInstance.root.innerHTML }

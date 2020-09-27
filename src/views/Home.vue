@@ -100,6 +100,17 @@
       placeholder="请输入内容oooooo"
       :pastePlainText="true"
     />
+    <h1>支持提及（@功能）</h1>
+    <div style="margin-top:5px">
+      <a-button @click="showMenu()">展示@列表</a-button>
+      <a-button @click="addMention()">手动增加一个at成员</a-button>
+    </div>
+    <rich-text
+      v-model="demo13.content"
+      placeholder="提交功能"
+      :options="demo13.options"
+      @init="demo13Init"
+    />
   </div>
 </template>
 
@@ -109,6 +120,18 @@ import RichText from '@/components/VEditor/src/editor.vue'
 import Vue from 'vue'
 import { Button, message } from 'ant-design-vue'
 Vue.use(Button)
+const advancedValues = [
+  { id: '1', value: 'Manuel Neuer', team: 'Bayern Munich' },
+  { id: '2', value: 'Robert Lewandowski', team: 'Bayern Munich' },
+  { id: '3', value: 'Thomas Muller', team: 'Bayern Munich' },
+  { id: '4', value: 'Roman Burki', team: 'Borussia Dortmund' },
+  { id: '5', value: 'Jadon Sancho', team: 'Borussia Dortmund' },
+  { id: '6', value: 'Marco Reus', team: 'Borussia Dortmund' },
+  { id: '7', value: 'Alexander Nubel', team: 'Schalke 04' },
+  { id: '8', value: 'Bastian Oczipka', team: 'Schalke 04' },
+  { id: '9', value: 'Weston McKennie', team: 'Schalke 04' }
+]
+
 export default {
   name: 'Home',
   components: {
@@ -326,6 +349,60 @@ export default {
       demo12: {
         content:
           '<p>它的设计原则是<span style="color: rgb(204, 51, 229);">简洁、直接、</span><strong style="color: rgb(204, 51, 229);"><u>优雅和</u></strong><strong><u>适应性。</u></strong></p><p><br></p><p>欢迎使用<img height="24" width="24" src="//qiyukf.com/sdk/res/portrait/emoji/new_emoji_25.png" alt="[玫瑰]" data-type="defaultEmoji" data-id="emoticon_emoji_132" class="portrait_icon"></p>'
+      },
+      demo13: {
+        editor: null,
+        content:
+          '<span class="mention" data-index="3" data-denotation-char="@" data-id="3" data-value="Thomas Muller">﻿<span contenteditable="false"><span class="ql-mention-denotation-char">@</span>Thomas Muller</span>﻿</span>',
+        options: {
+          modules: {
+            mention: {
+              allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+              mentionDenotationChars: ['@', '#'],
+              positioningStrategy: 'fixed',
+              renderItem: (data) => {
+                if (data.disabled) {
+                  return `<div style="height:24px;line-height:24px;font-size:10px;background-color:#ccc;margin:0 -20px;padding:4px">${data.value}</div>`
+                }
+                return data.value
+              },
+              renderLoading: () => {
+                return 'Loading...'
+              },
+              source: function (searchTerm, renderList, mentionChar) {
+                let matches = []
+
+                if (searchTerm.length === 0) {
+                  matches = advancedValues
+                } else {
+                  for (let i = 0; i < advancedValues.length; i++) {
+                    if (~advancedValues[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) {
+                      matches.push(advancedValues[i])
+                    }
+                  }
+                }
+
+                // create group header items
+                const matchesWithGroupHeaders = []
+                let currentTeam
+                for (let i = 0; i < matches.length; i++) {
+                  const match = matches[i]
+                  if (currentTeam !== match.team) {
+                    matchesWithGroupHeaders.push({
+                      id: match.team,
+                      value: match.team,
+                      disabled: true
+                    })
+                    currentTeam = match.team
+                  }
+                  matchesWithGroupHeaders.push(match)
+                }
+                matches = matchesWithGroupHeaders
+                renderList(matches, searchTerm)
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -352,6 +429,22 @@ export default {
       quill.insertText(range.index, '【自定义文本】', {
         customAttr: { editable: false }
       })
+    },
+    demo13Init (editor) {
+      this.demo13.editor = editor
+    },
+    showMenu () {
+      this.demo13.editor.getModule('mention').openMenu('@')
+    },
+    addMention () {
+      this.demo13.editor.getModule('mention').insertItem(
+        {
+          denotationChar: '@',
+          id: '123abc',
+          value: 'Hello World'
+        },
+        true
+      )
     }
   }
 }

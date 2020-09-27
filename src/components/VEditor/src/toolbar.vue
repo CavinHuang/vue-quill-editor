@@ -100,8 +100,10 @@ export default {
       getPopupContainer: () => document.body,
       curInsertValueList: [],
       defaultSizes: ['32px', '24px', '20px', '18px', '16px', '14px', '13px', '12px'],
+      defaultLineHeight: ['1.0', '1.2', '1.5', '1.8', '2.0', '2.4', '2.6', '2.8', '3.0', '4.0', '5.0'],
       curSize: null,
       sizePopoverVisible: false,
+      lineHeightPopoverVisible: false,
       curIVSearchValue: '',
       defaultBackgrounds: () => {
         const colors = []
@@ -683,6 +685,69 @@ export default {
                 placement={popoverPlacement}
                 getPopupContainer={getPopupContainer}
                 onVisibleChange={this.handleSizePopoverVisibleChange}
+              >
+                <Tooltip
+                  trigger="hover"
+                  placement={tooltipPlacement}
+                  title="文字大小"
+                  mouseEnterDelay={0.3}
+                >
+                  <div class="item">
+                    <div class={sizeCls}/>
+                  </div>
+                </Tooltip>
+              </Popover>
+            )
+
+            tooltip = '文字大小'
+
+            break
+          }
+          case 'lineheight': {
+            const sizeCls = classNames('action custom-line-height', {
+              [`${iconPrefix}`]: true,
+              [`${iconPrefix}-richeditor-line-height`]: true
+            })
+
+            this.curLineHeightList = this.defaultLineHeight
+            if (Array.isArray(mValue) && mValue.length) {
+              this.curLineHeightList = mValue
+            }
+
+            const content = (
+              <div class="size-con" key="custom_size_content" onClick={this.handleLineHeightItemClick}>
+                {
+                  this.curLineHeightList && this.curLineHeightList.map((size, index) => {
+                    const sizeItemCls = classNames('size-item', {
+                      active: size && (this.curSize === size.trim())
+                    })
+
+                    return (
+                      <button
+                        class={sizeItemCls}
+                        key={'custom_size_' + index}
+                        value={size}
+                        style={{ lineHeight: size }}
+                      >
+                        {size}
+                      </button>
+                    )
+                  })
+                }
+              </div>
+            )
+
+            value = (
+              <Popover
+                trigger="click"
+                overlayClassName={`${prefixCls}-size-popover`}
+                content={content}
+                title={null}
+                key={key}
+                visible={this.lineHeightPopoverVisible}
+                placement={popoverPlacement}
+                getPopupContainer={getPopupContainer}
+                onVisibleChange={this.handleLineHeightPopoverVisibleChange}
               >
                 <Tooltip
                   trigger="hover"
