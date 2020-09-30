@@ -20,7 +20,6 @@ export default {
 
       this.handleSelectionChange = function (range, oldRange, source) {
         if (this.onEditorChangeSelection) {
-          console.log('1111111111')
           this.onEditorChangeSelection(
             range, source,
             unprivilegedEditor
@@ -30,7 +29,6 @@ export default {
 
       this.handleEditorChange = function (eventType, rangeOrDelta, oldRangeOrOldDelta, source) {
         if (eventType === Quill.events.SELECTION_CHANGE) {
-          console.log('+++++++')
           this.handleSelectionChange(rangeOrDelta, oldRangeOrOldDelta, source)
         }
 

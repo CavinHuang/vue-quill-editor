@@ -86,6 +86,13 @@ export default {
         }
       }
     },
+    getCurLineHeight: {
+      type: Function,
+      default: () => {
+        return function () {
+        }
+      }
+    },
     handleInsertValue: {
       type: Function,
       default: () => {
@@ -104,6 +111,7 @@ export default {
       curSize: null,
       sizePopoverVisible: false,
       lineHeightPopoverVisible: false,
+      curLineHeight: null,
       curIVSearchValue: '',
       defaultBackgrounds: () => {
         const colors = []
@@ -253,6 +261,24 @@ export default {
     handleIVSearchChange (e) {
       const value = e.target.value
       this.curIVSearchValue = value || ''
+    },
+    handleLineHeightPopoverVisibleChange (visible) {
+      this.lineHeightPopoverVisible = visible
+      console.log('visible', visible)
+      if (!visible) return
+      const { getCurLineHeight } = this
+      const curLineHeight = getCurLineHeight && getCurLineHeight()
+      console.log('visible', curLineHeight)
+      if (curLineHeight !== this.curLineHeight) {
+        this.curLineHeight = curLineHeight * 1
+      }
+    },
+    handleLineHeightItemClick (e) {
+      const target = e.target
+      if (target.classList.value.indexOf('line-height-item') > -1 && target.hasAttribute('value')) {
+        this.$emit('handleFormatLineHeight', target.getAttribute('value'))
+        this.lineHeightPopoverVisible = false
+      }
     },
     getModuleHTML (mType, key) {
       const {
@@ -718,8 +744,8 @@ export default {
               <div class="size-con" key="custom_size_content" onClick={this.handleLineHeightItemClick}>
                 {
                   this.curLineHeightList && this.curLineHeightList.map((size, index) => {
-                    const sizeItemCls = classNames('size-item', {
-                      active: size && (this.curSize === size.trim())
+                    const sizeItemCls = classNames('line-height-item', {
+                      active: size && (this.curLineHeight === (size.trim()) * 1)
                     })
 
                     return (
@@ -752,7 +778,7 @@ export default {
                 <Tooltip
                   trigger="hover"
                   placement={tooltipPlacement}
-                  title="文字大小"
+                  title="行高"
                   mouseEnterDelay={0.3}
                 >
                   <div class="item">
@@ -762,7 +788,7 @@ export default {
               </Popover>
             )
 
-            tooltip = '文字大小'
+            // tooltip = '行高'
 
             break
           }

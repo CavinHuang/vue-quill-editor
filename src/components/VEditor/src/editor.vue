@@ -89,11 +89,13 @@
           @handleFormatColor="handleFormatColor"
           @handleFormatBackground="handleFormatBackground"
           @handleFormatSize="handleFormatSize"
+          @handleFormatLineHeight="handleFormatLineHeight"
           :handleInsertValue="handleInsertValue"
           :popoverPlacement="popoverPlacement"
           :tooltipPlacement="tooltipPlacement"
           @getPopupContainer="getPopupContainer"
           :getCurrentSize="getCurrentSize"
+          :getCurLineHeight="getCurLineHeight"
           :formatPainterActive="formatPainterActive"
           @saveSelectionFormat="handleSaveSelectionFormat"
           @unsaveSelectionFormat="handleUnsaveSelectionFormat"
@@ -180,6 +182,10 @@ export default {
     defaultFontSize: {
       type: String,
       default: '14px'
+    },
+    defaultLineHeight: {
+      type: Number,
+      default: 1.2
     },
     prefixCls: {
       type: String,
@@ -668,6 +674,12 @@ export default {
         fontSize: value
       })
     },
+    handleFormatLineHeight (value) {
+      const quill = this.editorInstance
+      quill && quill.format('customAttr', {
+        lineHeight: value
+      })
+    },
     getCurrentSize () {
       const quill = this.editorInstance
       if (!quill) return null
@@ -699,6 +711,43 @@ export default {
             return null
           } else {
             return fontSize
+          }
+        } else {
+          return this.defaultFontSize
+        }
+      }
+      return null
+    },
+    getCurLineHeight () {
+      const quill = this.editorInstance
+      if (!quill) return null
+
+      const formats = quill.getFormat()
+      const customAttr = formats && formats.customAttr
+      const customAttrType = Object.prototype.toString.call(customAttr)
+      if (!customAttr) return this.defaultLineHeight
+
+      if (customAttrType === '[object Object]') {
+        return customAttr.lineHeight || this.defaultLineHeight
+      }
+
+      if (customAttrType === '[object Array]') {
+        const len = customAttr.length
+        if (len) {
+          const lineHeight = customAttr[0].lineHeight
+          let hasMultiFontSize = false
+          for (let i = 0; i < len; i++) {
+            // 选中的富文本有多种字体大小时不高亮字号
+            if (customAttr[i].fontSize !== lineHeight) {
+              hasMultiFontSize = true
+              break
+            }
+          }
+
+          if (hasMultiFontSize) {
+            return null
+          } else {
+            return lineHeight
           }
         } else {
           return this.defaultFontSize
