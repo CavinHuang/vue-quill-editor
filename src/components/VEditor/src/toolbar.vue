@@ -116,26 +116,30 @@ export default {
       defaultBackgrounds: () => {
         const colors = []
         COLORS.forEach(function (color, index) {
-          colors.push(<button
-            class="background-item"
-            key={'default_background_' + index}
-            value={color}
-            title={color}
-            style={{ backgroundColor: color }}
-          />)
+          colors.push(
+            <button
+              class="background-item"
+              key={'default_background_' + index}
+              value={color}
+              title={color}
+              style={{ backgroundColor: color }}
+            />
+          )
         })
         return colors
       },
       defaultColors: () => {
         const colors = []
         COLORS.forEach(function (color, index) {
-          colors.push(<button
-            class="color-item"
-            key={'default_background_' + index}
-            value={color}
-            title={color}
-            style={{ backgroundColor: color }}
-          />)
+          colors.push(
+            <button
+              class="color-item"
+              key={'default_background_' + index}
+              value={color}
+              title={color}
+              style={{ backgroundColor: color }}
+            />
+          )
         })
         return colors
       },
