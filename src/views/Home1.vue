@@ -5,6 +5,112 @@
       placeholder="请输入内容"
       :supportFontTag="true"
     />
+    <h1>自定义文字大小</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :supportFontTag="true"
+      :toolbar="demo2.toolbar"
+    />
+    <h1>定制文字颜色</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :supportFontTag="true"
+      :toolbar="demo3.toolbar"
+    />
+    <h1>定制表情包</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :supportFontTag="true"
+      :customEmoji="demo4.customEmoji"
+    />
+    <h1>扩展插入文本功能</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :supportFontTag="true"
+      :toolbar="demo5.toolbar"
+      :customInsertValue="demo5.customInsertValue"
+    />
+    <h1>扩展添加超链接功能</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :supportFontTag="true"
+      :toolbar="demo6.toolbar"
+      :customLink="demo6.customLink"
+    />
+    <h1>自定义插入图片</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :loading="loading"
+      :supportFontTag="true"
+      :toolbar="demo7.toolbar"
+      :customInsertImage="demo7.customInsertImage"
+    />
+    <h1>自定义拖入/粘贴图片</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :loading="loading"
+      :customDropImage="demo8.customDropImage"
+    />
+    <h1>自定义插入视频</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :customInsertVideo="demo9.customInsertVideo"
+      :loading="loading"
+      :videoTagAttrs="{ 'data-test-default': 'test-default' }"
+    />
+    <h1>自定义插入附件</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :customInsertAttachment="demo10.customInsertAttachment"
+      insertAttachmentTip="支持docx、xlsx、pdf、pptx等常见文件格式，单个文件大小不得超过10M。"
+      :loading="loading"
+      :videoTagAttrs="{ 'data-test-default': 'test-default' }"
+    />
+    <h1>拖拽编辑器改变大小</h1>
+    <rich-text
+      v-model="content"
+      placeholder="请输入内容oooooo"
+      :resizable="true"
+    />
+    <h1>支持使用 font 标签</h1>
+    <rich-text
+      v-model="fontContent"
+      placeholder="请输入内容oooooo"
+      :supportFontTag="true"
+    />
+    <h1>插入不可编辑的文本</h1>
+    <a-button :style="{marginBottom: 10}" @click="handleInsertText">插入文本</a-button>
+    <rich-text
+      v-model="fontContent"
+      placeholder="请输入内容oooooo"
+      @init="editorInit"
+    />
+    <h1>支持粘贴纯文本</h1>
+    <rich-text
+      v-model="demo12.content"
+      placeholder="请输入内容oooooo"
+      :pastePlainText="true"
+    />
+    <h1>支持提及（@功能）</h1>
+    <div style="margin-top:5px">
+      <a-button @click="showMenu()">展示@列表</a-button>
+      <a-button @click="addMention()">手动增加一个at成员</a-button>
+    </div>
+    <rich-text
+      v-model="demo13.content"
+      placeholder="提交功能"
+      :options="demo13.options"
+      @init="demo13Init"
+    />
   </div>
 </template>
 

@@ -1,0 +1,77 @@
+// 基本色鲜艳
+$--color-weak:#606266 !default;
+$--tool-tip-bgcolor: rgba(0, 0, 0, .8) !default;
+$--tool-tip-border-color: rgba(0, 0, 0, .4) !default;
+
+$namespace: 'cc';
+$cc-separator: '__';
+
+@mixin b($block) {
+  // !global与!defult相对立, 优先与默认编译
+  $B: $namespace + '-' + $block !global;
+
+  .#{$B} {
+    @content;
+  }
+}
+@mixin e($name) {
+  &#{$cc-separator}#{$name} {
+    @content;
+  }
+}
+@mixin triangleAfter ($where){
+  &::after{
+    content: '';
+    position: absolute;
+    border: 6px solid white;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    @if $where== 'top' {
+      bottom: -11px;
+      border-top-color: white;
+    }
+    @if $where== 'right' {
+      left: -11px;
+      border-right-color:white;
+    }
+    @if $where== 'left' {
+      right: -11px;
+      border-left-color:white;
+    }
+    @if $where== 'bottom' {
+      top: -11px;
+      border-bottom-color: white;
+    }
+    @content;
+  };
+}
+@mixin triangleBefore ($where){
+  &::before{
+    content: '';
+    position: absolute;
+    border: 6px solid rgb(172, 171, 171);
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    @if $where== 'top' {
+      bottom: -12px;
+      border-top-color: rgb(172, 171, 171);
+    }
+    @if $where== 'right' {
+      left:-12px;
+      border-right-color: rgb(172, 171, 171);
+    }
+    @if $where== 'left' {
+      right: -12px;
+      border-left-color: rgb(172, 171, 171);
+    }
+    @if $where== 'bottom' {
+      top: -12px;
+      border-bottom-color: rgb(172, 171, 171);
+    }
+    @content;
+  };
+}

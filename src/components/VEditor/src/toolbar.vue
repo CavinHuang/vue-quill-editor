@@ -11,7 +11,9 @@
 import classNames from 'classnames'
 import emojiList from './emojiList.js'
 import Vue from 'vue'
-import { Tooltip, Popover, Icon, Tabs, Input } from 'ant-design-vue'
+import { Tooltip, Icon, Tabs, Input } from 'ant-design-vue'
+import ToolTip from '@/components/ToolTip'
+import Popover from '@/components/Popover'
 
 const COLORS = [
   '#E53333', '#E56600', '#FF9900',
@@ -392,14 +394,16 @@ export default {
         value = (
           <Popover
             trigger="click"
-            overlayClassName={`${prefixCls}-insert-value-popover`}
-            content={content}
+            containerCls={`${prefixCls}-insert-value-popover`}
             title={null}
             key={key}
             placement={popoverPlacement}
             getPopupContainer={getPopupContainer}
           >
-            <Tooltip
+            <div slot="content">
+              {content}
+            </div>
+            <ToolTip
               trigger="hover"
               placement={tooltipPlacement}
               title={customInsertValue[mType].title ? customInsertValue[mType].title : null}
@@ -415,7 +419,7 @@ export default {
                   />
                 </div>
               </div>
-            </Tooltip>
+            </ToolTip>
           </Popover>
         )
 
@@ -486,14 +490,14 @@ export default {
             value = (
               <Popover
                 trigger="click"
-                overlayClassName={`${prefixCls}-color-popover`}
-                content={content}
+                containerCls={`${prefixCls}-color-popover`}
                 title={null}
                 key={key}
                 placement={popoverPlacement}
                 getPopupContainer={getPopupContainer}
               >
-                <Tooltip
+                <div slot="content">{content}</div>
+                <ToolTip
                   trigger="hover"
                   placement={tooltipPlacement}
                   title="文字颜色"
@@ -504,23 +508,9 @@ export default {
                       <button type="button" data-role="color" value="" class="ql-color hide"/>
                     </div>
                   </div>
-                </Tooltip>
+                </ToolTip>
               </Popover>
             )
-
-            // value = <div className="item"><select className="ql-color" /></div>
-            // value = (
-            //   <div className="custom-color" key={key}>
-            //     <ColorPicker
-            //       className={"custom-color-picker"}
-            //       enableHistory={true}
-            //       enableAlpha={false}
-            //       onClose={this.handleColorSelect.bind(this)}
-            //     >
-            //       <button className="ql-customColor" />
-            //     </ColorPicker>
-            //   </div>
-            // )
             tooltip = '文字颜色'
             break
           }
@@ -528,7 +518,6 @@ export default {
             if (typeof mValue === 'string') {
               let alignIconType = 'richeditor-align-lef'
               tooltip = '居左'
-
               if (mValue === 'right') {
                 alignIconType = 'richeditor-align-rig'
                 tooltip = '居右'
@@ -546,24 +535,6 @@ export default {
               })
               value = <button type="button" class={alignCls} value={mValue} key={key}/>
             }
-            // else if (mValue instanceof Array && mValue.length) {
-            //   value = (
-            //     <div className="item" key={key}>
-            //       <select className="ql-align">
-            //         <option />
-            //         {
-            //           mValue.map((val, idx) => {
-            //             return <option key={key+'_option_'+idx} value={val} />
-            //           })
-            //         }
-            //       </select>
-            //     </div>
-            //   )
-            //   tooltip = '对齐'
-            // } else {
-            //   value = <div className="item" key={key}><select className="ql-align" /></div>
-            //   tooltip = '对齐'
-            // }
             break
           }
           case 'list': {
@@ -619,7 +590,7 @@ export default {
               })
 
               content = (
-                <a-tabs defaultActiveKey="emoji_default" size="small">
+                <a-tabs slot="content" defaultActiveKey="emoji_default" size="small">
                   {tabPanes}
                 </a-tabs>
               )
@@ -628,13 +599,15 @@ export default {
             value = (
               <Popover
                 trigger="click"
-                overlayClassName={`${prefixCls}-emoji-popover`}
-                content={content}
+                containerCls={`${prefixCls}-emoji-popover`}
                 title={null}
                 key={key}
                 placement={popoverPlacement}
                 getPopupContainer={getPopupContainer}
               >
+                <div slot="content">
+                  {content}
+                </div>
                 <Tooltip
                   trigger="hover"
                   placement={tooltipPlacement}
@@ -707,8 +680,7 @@ export default {
             value = (
               <Popover
                 trigger="click"
-                overlayClassName={`${prefixCls}-size-popover`}
-                content={content}
+                containerCls={`${prefixCls}-size-popover`}
                 title={null}
                 key={key}
                 visible={this.sizePopoverVisible}
@@ -716,7 +688,8 @@ export default {
                 getPopupContainer={getPopupContainer}
                 onVisibleChange={this.handleSizePopoverVisibleChange}
               >
-                <Tooltip
+                <div slot="content">{content}</div>
+                <ToolTip
                   trigger="hover"
                   placement={tooltipPlacement}
                   title="文字大小"
@@ -725,7 +698,7 @@ export default {
                   <div class="item">
                     <div class={sizeCls}/>
                   </div>
-                </Tooltip>
+                </ToolTip>
               </Popover>
             )
 
@@ -770,8 +743,7 @@ export default {
             value = (
               <Popover
                 trigger="click"
-                overlayClassName={`${prefixCls}-size-popover`}
-                content={content}
+                containerCls={`${prefixCls}-size-popover`}
                 title={null}
                 key={key}
                 visible={this.lineHeightPopoverVisible}
@@ -779,7 +751,8 @@ export default {
                 getPopupContainer={getPopupContainer}
                 onVisibleChange={this.handleLineHeightPopoverVisibleChange}
               >
-                <Tooltip
+                <div slot="content">{content}</div>
+                <ToolTip
                   trigger="hover"
                   placement={tooltipPlacement}
                   title="行高"
@@ -788,7 +761,7 @@ export default {
                   <div class="item">
                     <div class={sizeCls}/>
                   </div>
-                </Tooltip>
+                </ToolTip>
               </Popover>
             )
 
@@ -886,14 +859,14 @@ export default {
             value = (
               <Popover
                 trigger="click"
-                overlayClassName={`${prefixCls}-background-popover`}
-                content={content}
+                containerCls={`${prefixCls}-background-popover`}
                 title={null}
                 key={key}
                 placement={popoverPlacement}
                 getPopupContainer={getPopupContainer}
               >
-                <Tooltip
+                <div slot="content">{content}</div>
+                <ToolTip
                   trigger="hover"
                   placement={tooltipPlacement}
                   title="背景色"
@@ -904,7 +877,7 @@ export default {
                       <button type="button" data-role="background" value="" class="ql-background hide"/>
                     </div>
                   </div>
-                </Tooltip>
+                </ToolTip>
               </Popover>
             )
 
@@ -916,29 +889,6 @@ export default {
             tooltip = '插入视频'
             break
           }
-          // case 'header': {
-          //   if (typeof mValue === 'string' || typeof mValue === 'number') {
-          //     value = <button type="button" className="ql-header" value={mValue} key={key}/>
-          //   } else if (mValue instanceof Array && mValue.length){
-          //     value = (
-          //       // <div className="item" key={key}>
-          //         <select className="ql-header" defaultValue="normal">
-          //           {
-          //             mValue.map((val, idx) => <option key={key+'_option_'+idx} value={val} />)
-          //           }
-          //           <option value="normal" />
-          //         </select>
-          //       // </div>
-          //     )
-          //   }
-          //   tooltip = '标题'
-          //   break
-          // }
-          // case 'font': {
-          //   value = <select className="ql-font" />
-          //   tooltip = '字体'
-          //   break
-          // }
           default: {
             break
           }
@@ -948,7 +898,7 @@ export default {
       const mTypesHasPopover = ['background', 'color', 'emoji', 'size']
       if (value && (mTypesHasPopover.indexOf(mType) < 0) && !(mType in customInsertValue)) {
         value = (
-          <Tooltip
+          <ToolTip
             key={key}
             trigger="hover"
             placement={tooltipPlacement}
@@ -956,7 +906,7 @@ export default {
             mouseEnterDelay={0.3}
           >
             <div class="item">{value}</div>
-          </Tooltip>
+          </ToolTip>
         )
       }
 

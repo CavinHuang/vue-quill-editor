@@ -1,30 +1,22 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-    <button @click="toggleModal">打开Modal对话框</button>
-    <Modal v-show="showModal" v-on:close="closeme"></Modal>
+  <div>
+    <Popover trigger="click">
+      这是一些内容
+    </Popover>
+    <ToolTip>
+      这是一些内容
+    </ToolTip>
   </div>
 </template>
 
 <script>
-import Modal from '@/components/Modal'
+import Popover from '@/components/Popover'
+import ToolTip from '@/components/ToolTip'
 export default {
   name: 'About',
-  data () {
-    return {
-      showModal: false
-    }
-  },
   components: {
-    Modal
-  },
-  methods: {
-    toggleModal () {
-      this.showModal = !this.showModal
-    },
-    closeme () {
-      this.showModal = !this.showModal
-    }
+    Popover,
+    ToolTip
   }
 }
 </script>

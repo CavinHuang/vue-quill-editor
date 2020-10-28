@@ -11,7 +11,8 @@
 
 /* stylelint-disable declaration-no-important */
 .@{rich-editor-prefix}-link-modal,
-.@{rich-editor-prefix}-video-modal {
+.@{rich-editor-prefix}-video-modal,
+.@{rich-editor-prefix}-image-modal {
   .text {
     font-size: 14px;
     margin-right: 8px;
@@ -24,15 +25,7 @@
     color: #999;
   }
 }
-
-.@{rich-editor-prefix}-image-modal {
-  .tip {
-    font-size: 12px;
-    margin-top: 8px;
-    color: #999;
-  }
-}
-
+// 富文本编辑器缩放样式
 .@{rich-editor-prefix}.resizable {
   .iconfont-mixin();
   resize: both;
@@ -52,7 +45,7 @@
     z-index: 10;
   }
 }
-
+// 富文本编辑器样式
 .@{rich-editor-prefix} {
   position: relative;
   display: flex;
@@ -305,7 +298,7 @@
     }
   }
 }
-
+// 字体大小、行高样式
 .@{rich-editor-prefix}-size-popover {
   .@{popover-prefix}-inner-content {
     padding: 0;
@@ -336,7 +329,7 @@
     color: @primary-color;
   }
 }
-
+// 字体颜色、背景色样式
 .@{rich-editor-prefix}-background-popover,
 .@{rich-editor-prefix}-color-popover {
   .@{popover-prefix}-inner-content {
@@ -364,7 +357,7 @@
     float: left;
   }
 }
-
+// 自定义插入模板样式
 .@{rich-editor-prefix}-insert-value-popover {
   .@{popover-prefix}-inner-content {
     padding: 0;
@@ -425,6 +418,7 @@
     }
   }
 }
+// 全局覆盖样式
 .no-flex > .ant-tabs-content-animated,
 .ant-tabs-no-animation > .ant-tabs-content-animated,
 .ant-tabs-vertical > .ant-tabs-content-animated {
