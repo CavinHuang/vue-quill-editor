@@ -242,13 +242,13 @@ export default {
       if (curSize !== this.curSize) {
         this.curSize = curSize
       }
+      console.log(this.curSize)
     },
     handleClearIVSearch () {
       this.curIVSearchValue = ''
     },
     handleSizeItemClick (e) {
       const target = e.target
-
       if (target.classList.value.indexOf('size-item') > -1 && target.hasAttribute('value')) {
         this.$emit('handleFormatSize', target.getAttribute('value'))
         this.sizePopoverVisible = false
@@ -653,11 +653,12 @@ export default {
             if (Array.isArray(mValue) && mValue.length) {
               this.curSizeList = mValue
             }
-
+            console.log(this.curSize)
             const content = (
               <div class="size-con" key="custom_size_content" onClick={this.handleSizeItemClick}>
                 {
                   this.curSizeList && this.curSizeList.map((size, index) => {
+                    console.log(this.curSize, size)
                     const sizeItemCls = classNames('size-item', {
                       active: size && (this.curSize === size.trim())
                     })

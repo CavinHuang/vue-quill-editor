@@ -27,6 +27,14 @@ export default {
     containerCls: {
       type: [String, Array],
       default: ''
+    },
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    hideDestroyElement: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -44,7 +52,6 @@ export default {
   },
   computed: {
     contentCls () {
-      console.log(this.options.direction)
       if (Array.isArray(this.containerCls)) return [this.options.direction, ...this.containerCls]
       return [this.options.direction, this.containerCls]
     }
@@ -105,7 +112,13 @@ export default {
         }
       })
     },
-    show () {
+    visible: {
+      handler: function (value) {
+        this.show = value
+      },
+      immediate: true
+    },
+    show (val) {
       if (this.show) {
         this.$nextTick(() => {
           const { popover, content } = this.$refs
@@ -117,9 +130,9 @@ export default {
           this.left = left
           this.top = top
           this.options = options
-          console.log(this.$slots)
         })
       }
+      this.$emit('visibleChange', val)
     }
   },
   mounted () {
