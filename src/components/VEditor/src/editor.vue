@@ -3,7 +3,7 @@
   saveSelectionFormat={this.handleSaveSelectionFormat}
   unsaveSelectionFormat={this.handleUnsaveSelectionFormat}-->
   <div class="quill-editor-container">
-    <a-modal
+    <v-modal
       :title="linkModalTitle"
       :class="`${prefixCls}-link-modal`"
       :visible="showLinkModal"
@@ -12,26 +12,27 @@
       destroyOnClose
     >
       <span class="text">超链接地址</span>
-      <a-input
+      <input
+        class="quill-input"
         ref="linkModalInputRef"
         :style="{ width: '434px' }"
-        :defaultValue="defaultInputLink"
+        :value="defaultInputLink"
       />
       <div class="tip" v-if="insertLinkTip">{{ insertLinkTip }}</div>
-    </a-modal>
+    </v-modal>
 
-    <a-modal
+    <v-modal
       title="插入图片"
       class="`${prefixCls}-image-modal`"
       :visible="showImageModal"
       :footer="null"
       @Cancel="handleImageModalCancel"
     >
-      <a-button type="primary" @click="handlePickLocalImage">选择本地图片</a-button>
+      <button class="btn btn-primary" type="button" @click="handlePickLocalImage">选择本地图片</button>
       <div class="tip" v-if="insertImageTip">{{ insertImageTip }}</div>
-    </a-modal>
+    </v-modal>
 
-    <a-modal
+    <v-modal
       title="插入视频"
       :class="`${prefixCls}-video-modal`"
       :visible="showVideoModal"
@@ -39,41 +40,43 @@
       @ok="handleVideoModalOk"
       @cancel="handleVideoModalCancel"
     >
-      <a-radio-group
+      <radio-group
         :style="{marginBottom: '24px'}"
         @change=handleVideoTypeChange
         :value="curVideoType"
       >
-        <a-radio value="video_local" v-if="isSupportCustomInsertVideo">本地视频</a-radio>
-        <a-radio value="video_link">视频链接</a-radio>
-      </a-radio-group>
+        <radio value="video_local" v-if="isSupportCustomInsertVideo" label="1">本地视频</radio>
+        <radio value="video_link" label="2">视频链接</radio>
+      </radio-group>
 
       <template v-if="curVideoType === 'video_local'">
-        <a-button
+        <button
+          class="btn btn-primary"
           :style="{ display: 'block' }"
-          type="primary"
+          type="button"
           @click="handlePickLocalVideo"
-        >选择本地视频</a-button>
+        >选择本地视频</button>
         <div class="tip" v-if="insertVideoTip">{{ insertVideoTip }}</div>
       </template>
-      <a-input
+      <input
+        class="quill-input"
         v-else
         ref="videoModalInputRef"
         :style="{ width: '434px' }"
         placeholder="请输入视频链接URL"
       />
-    </a-modal>
+    </v-modal>
 
-    <a-modal
+    <v-modal
       title="插入附件"
       :class="`${prefixCls}-image-modal`"
       :visible="showAttachmentModal"
-      :footer="null"
       @cancel="handleAttachmentModalCancel"
     >
-      <a-button type="primary" @click="handlePickLocalFile">选择本地文件</a-button>
-      <div className="tip" v-if="insertAttachmentTip">{{ insertAttachmentTip }}</div>
-    </a-modal>
+      <button class="btn btn-primary" type="button" @click="handlePickLocalFile">选择本地文件</button>
+      <div class="tip" v-if="insertAttachmentTip">{{ insertAttachmentTip }}</div>
+      <div slot="footer"></div>
+    </v-modal>
 
     <div class="fishd-richeditor" :class="{ resizable: resizable }" ref="container">
       <slot name="toolbar">
@@ -111,15 +114,18 @@ import Quill from './quill'
 import CustomToolbar from './toolbar'
 import LinkBlot from './formats/link.js'
 import PlainClipboard from './modules/plainClipboard.js'
-import { Button, Input, message, Modal, Radio } from 'ant-design-vue'
+import { Button, message, Modal } from 'ant-design-vue'
+import VModal from '@/components/Modal'
 import editorMixin from './editorMixin'
 import Vue from 'vue'
 import './plugins'
 import '../style/index.less'
+import Radio from '@/components/Radio'
+import RadioGroup from '@/components/Radio/group'
 const isEqual = require('lodash/isEqual')
 const merge = require('lodash/merge')
 
-Vue.use(Modal).use(Input).use(Button).use(Radio)
+Vue.use(Modal).use(Button)
 
 const getImageSize = function (url, callback) {
   const newImage = document.createElement('img')
@@ -131,7 +137,10 @@ const getImageSize = function (url, callback) {
 
 export default {
   components: {
-    CustomToolbar
+    CustomToolbar,
+    VModal,
+    Radio,
+    RadioGroup
   },
   mixins: [editorMixin],
   props: {

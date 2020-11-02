@@ -56,50 +56,6 @@ export default {
       return [this.options.direction, this.containerCls]
     }
   },
-  methods: {
-    handlClick () {
-      // 为了兼容v-if
-      // 为了兼容滚动消除
-      this.init = true
-      // console.log(this.$refs.content)
-      if (this.$refs.content && this.$refs.content.style.display === 'none') {
-        // 有bug, 必须这样强制写
-        this.$refs.content.style.display = 'block'
-        this.show = true
-      } else {
-        this.show = !this.show
-      }
-      // 不要监听body, 因为可能height不是100%
-      // 这个document也可以有用户指定
-      // 放入的是同名函数, 没问题的
-      this.show && document.addEventListener('click', this.close)
-    },
-    close (e) {
-      if (this.isPopover(e)) {
-        this.show = false
-        document.removeEventListener('click', this.close)
-      }
-    },
-    isPopover (e) {
-      const dom = e.target
-      const popover = this.$refs.popover
-      const content = this.$refs.content
-      return !(popover.contains(dom) || content.contains(dom))
-    },
-    // 移入
-    handleMouseEnter () {
-      clearTimeout(this.time)
-      this.init = true
-      this.show = true
-    },
-    // 移出
-    handleMouseLeave () {
-      clearTimeout(this.time)
-      this.time = setTimeout(() => {
-        this.show = false
-      }, 200)
-    }
-  },
   watch: {
     init () {
       this.$nextTick(() => {
@@ -149,6 +105,50 @@ export default {
       }
     })
   },
+  methods: {
+    handlClick () {
+      // 为了兼容v-if
+      // 为了兼容滚动消除
+      this.init = true
+      // console.log(this.$refs.content)
+      if (this.$refs.content && this.$refs.content.style.display === 'none') {
+        // 有bug, 必须这样强制写
+        this.$refs.content.style.display = 'block'
+        this.show = true
+      } else {
+        this.show = !this.show
+      }
+      // 不要监听body, 因为可能height不是100%
+      // 这个document也可以有用户指定
+      // 放入的是同名函数, 没问题的
+      this.show && document.addEventListener('click', this.close)
+    },
+    close (e) {
+      if (this.isPopover(e)) {
+        this.show = false
+        document.removeEventListener('click', this.close)
+      }
+    },
+    isPopover (e) {
+      const dom = e.target
+      const popover = this.$refs.popover
+      const content = this.$refs.content
+      return !(popover.contains(dom) || content.contains(dom))
+    },
+    // 移入
+    handleMouseEnter () {
+      clearTimeout(this.time)
+      this.init = true
+      this.show = true
+    },
+    // 移出
+    handleMouseLeave () {
+      clearTimeout(this.time)
+      this.time = setTimeout(() => {
+        this.show = false
+      }, 200)
+    }
+  },
   beforeDestroy () {
     const { popover, content } = this.$refs
     off(content, 'mouseleave', this.handleMouseLeave)
@@ -156,6 +156,8 @@ export default {
     off(content, 'mouseenter', this.handleMouseEnter)
     off(popover, 'mouseenter', this.handleMouseEnter)
     off(document, 'click', this.close)
+    clearTimeout(this.enterTimer)
+    clearTimeout(this.timer)
     if (document.body.contains(content)) {
       document.body.removeChild(content)
     }

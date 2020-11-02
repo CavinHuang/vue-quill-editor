@@ -425,4 +425,36 @@
   transform: none !important;
   margin-left: 0 !important;
 }
+.quill-input {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-variant: tabular-nums;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 32px;
+  padding: 4px 11px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 1.5;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+.quill-input:focus {
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(24,144,255,.2);
+}
+.quill-input:focus, .quill-input:hover {
+  border-color: #40a9ff;
+  border-right-width: 1px!important;
+}
+.quill-input:placeholder-shown {
+  text-overflow: ellipsis;
+}
 /* stylelint-enable */

@@ -11,7 +11,7 @@
 import classNames from 'classnames'
 import emojiList from './emojiList.js'
 import Vue from 'vue'
-import { Tooltip, Icon, Tabs, Input } from 'ant-design-vue'
+import { Icon, Tabs, Input } from 'ant-design-vue'
 import ToolTip from '@/components/ToolTip'
 import Popover from '@/components/Popover'
 
@@ -37,7 +37,7 @@ export default {
   components: {
     Input,
     Icon,
-    Tooltip,
+    ToolTip,
     Popover
   },
   props: {
@@ -608,7 +608,7 @@ export default {
                 <div slot="content">
                   {content}
                 </div>
-                <Tooltip
+                <ToolTip
                   trigger="hover"
                   placement={tooltipPlacement}
                   title="插入表情"
@@ -619,7 +619,7 @@ export default {
                       <button type="button" data-role="emoji" value="" class="ql-emoji hide"/>
                     </div>
                   </div>
-                </Tooltip>
+                </ToolTip>
               </Popover>
             )
             tooltip = '插入表情'
