@@ -83,6 +83,7 @@ export default {
             content,
             this.placement
           )
+          console.log('++++', options, left, top)
           this.left = left
           this.top = top
           this.options = options

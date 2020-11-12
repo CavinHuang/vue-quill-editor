@@ -457,4 +457,61 @@
 .quill-input:placeholder-shown {
   text-overflow: ellipsis;
 }
+.quill-input-affix-wrapper {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  text-align: start;
+}
+.quill-input-affix-wrapper .quill-input:not(:last-child) {
+  padding-right: 30px;
+}
+.quill-input-affix-wrapper .quill-input {
+ position: relative;
+ text-align: inherit;
+}
+.quill-input-affix-wrapper .quill-input-prefix, .quill-input-affix-wrapper .quill-input-suffix {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 0;
+  transform: translateY(-50%);
+}
+.quill-input-affix-wrapper .quill-input-suffix {
+  right: 12px;
+}
+.quill-input-affix-wrapper .quill-input-prefix :not(.anticon), .quill-input-affix-wrapper .quill-input-suffix :not(.anticon) {
+  line-height: 1.5;
+}
+.anticon[tabindex] {
+  cursor: pointer;
+}
+//.fishd-richeditor-insert-value-popover .insert-value-icon-clear {
+//  font-size: 12px;
+//  color: #999;
+//}
+.anticon {
+  display: inline-block;
+  color: inherit;
+  font-style: normal;
+  line-height: 0;
+  text-align: center;
+  text-transform: none;
+  vertical-align: -0.125em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ }
 /* stylelint-enable */

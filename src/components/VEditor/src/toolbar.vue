@@ -10,10 +10,10 @@
 <script>
 import classNames from 'classnames'
 import emojiList from './emojiList.js'
-import Vue from 'vue'
-import { Icon, Tabs, Input } from 'ant-design-vue'
+import { Icon, Input } from 'ant-design-vue'
 import ToolTip from '@/components/ToolTip'
 import Popover from '@/components/Popover'
+import QInput from '@/components/Input'
 
 const COLORS = [
   '#E53333', '#E56600', '#FF9900',
@@ -31,14 +31,15 @@ const EMOJI_DEFAULT_HEIGHT = 24
 const EMOJI_COSTOM_WIDTH = 74
 const EMOJI_COSTOM_HEIGHT = 74
 
-Vue.use(Tabs)
-
 export default {
   components: {
     Input,
     Icon,
     ToolTip,
-    Popover
+    Popover,
+    ATabs: () => import('@/components/Tabs'),
+    ATabPane: () => import('@/components/Tabs/tab-pane'),
+    QInput
   },
   props: {
     iconPrefix: {
@@ -51,7 +52,7 @@ export default {
     },
     popoverPlacement: {
       type: String,
-      default: 'top'
+      default: 'bottom-middle'
     },
     tooltipPlacement: {
       type: String,
@@ -244,8 +245,11 @@ export default {
       }
       console.log(this.curSize)
     },
-    handleClearIVSearch () {
+    handleClearIVSearch (e) {
       this.curIVSearchValue = ''
+      e.stopPropagation()
+      e.preventDefault()
+      return false
     },
     handleSizeItemClick (e) {
       const target = e.target
@@ -353,15 +357,18 @@ export default {
             {
               customModule.showSearch
                 ? <div class="insert-value-search">
-                  <Input
+                  <q-input
                     placeholder={customModule.searchPlaceholder ? customModule.searchPlaceholder : '请输入关键字'}
                     suffix={
                       this.curIVSearchValue
-                        ? <Icon
-                          class="insert-value-icon-clear"
-                          type="close-circle-fill"
-                          onClick={this.handleClearIVSearch}
-                        /> : null
+                        ? <i aria-label="icon: close-circle-fill" tabIndex="-1" class="anticon anticon-close-circle-fill insert-value-icon-clear" onClick={this.handleClearIVSearch}>
+                          <svg viewBox="64 64 896 896" data-icon="close-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false">
+                            <path
+                              d="M685.4 354.8c0-4.4-3.6-8-8-8l-66 .3L512 465.6l-99.3-118.4-66.1-.3c-4.4 0-8 3.5-8 8 0 1.9.7 3.7 1.9 5.2l130.1 155L340.5 670a8.32 8.32 0 0 0-1.9 5.2c0 4.4 3.6 8 8 8l66.1-.3L512 564.4l99.3 118.4 66 .3c4.4 0 8-3.5 8-8 0-1.9-.7-3.7-1.9-5.2L553.5 515l130.1-155c1.2-1.4 1.8-3.3 1.8-5.2z"></path>
+                            <path
+                              d="M512 65C264.6 65 64 265.6 64 513s200.6 448 448 448 448-200.6 448-448S759.4 65 512 65zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path>
+                          </svg>
+                        </i> : null
                     }
                     value={this.curIVSearchValue}
                     onChange={this.handleIVSearchChange}
@@ -568,7 +575,7 @@ export default {
             )
             if (customEmoji && customEmoji.length) {
               const tabPanes = [
-                <a-tab-pane tab="默认表情" key="emoji_default">
+                <a-tab-pane label="默认表情" name="emoji_default">
                   <div class="emoji-ctner">
                     <div class="emoji-con" onClick={(e) => this.$emit('handleInsertEmoji', e)}>
                       {this.defaultEmojis()}
@@ -576,10 +583,9 @@ export default {
                   </div>
                 </a-tab-pane>
               ]
-
               customEmoji.forEach((item, index) => {
                 tabPanes.push(
-                  <a-tab-pane tab={item.name} key={'custom_emoji_' + index}>
+                  <a-tab-pane label={item.name} name={'custom_emoji_' + index}>
                     <div class="emoji-ctner">
                       <div class="emoji-con" onClick={(e) => this.$emit('handleInsertEmoji', e)}>
                         {this.genCustomEmoji(item.data)}
@@ -590,7 +596,7 @@ export default {
               })
 
               content = (
-                <a-tabs slot="content" defaultActiveKey="emoji_default" size="small">
+                <a-tabs style="width: 402px; overflow: hidden">
                   {tabPanes}
                 </a-tabs>
               )

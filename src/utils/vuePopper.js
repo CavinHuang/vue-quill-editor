@@ -6,6 +6,7 @@ export function getPopoverPosition (popover, content, direction, CONTANT) {
   const result = { show: true }
   getOptions(result, popover, content, direction, CONTANT)
   const { left, top } = getScrollOffset()
+  console.log('----', result, direction, left, top)
   result.left += left
   result.top += top
   return result

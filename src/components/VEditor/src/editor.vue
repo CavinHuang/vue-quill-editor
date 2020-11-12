@@ -178,7 +178,7 @@ export default {
     },
     popoverPlacement: {
       type: String,
-      default: 'top'
+      default: 'top-middle'
     },
     tooltipPlacement: {
       type: String,

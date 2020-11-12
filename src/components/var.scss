@@ -75,3 +75,109 @@ $cc-separator: '__';
     @content;
   };
 }
+
+/**
+   * Mixes a color with white. It's different from lighten()
+   *
+   * @param {color} $color
+   * @param {number (percentage)} $percent [The amout of white to be mixed in]
+   * @return {color}
+   *
+   * @example
+   *   .element {
+   *     background-color: tint(#6ecaa6 , 40%);
+   *   }
+   *
+   *   // CSS Output
+   *   .element {
+   *     background-color: #a8dfc9;
+   *   }
+   */
+
+@function tint(
+  $color,
+  $percent
+) {
+  @return mix(#FFF, $color, $percent);
+}
+/**
+ * Radio Style
+ */
+$text-color                 : #3F536E;
+$color-white                : #FFF;
+$color-primary              : #6190E8;
+
+$font-size-base             : 14px;
+$font-size-smer             : 12px;
+
+$brand-blue-50              : #ECF2FC;
+$brand-blue-400             : #79A1EB;
+$brand-blue-500             : #6190E8;
+
+$grey-100                   : #ECECEC;
+$grey-50                    : #F7F7F7;
+$grey-400                   : #C9C9C9;
+$grey-300                   : #D2D2D2;
+$border-color-base          : #C5D9E8;
+
+$border-color-lighter       : tint($border-color-base, 50%);
+$border-color-lightest      : tint($border-color-base, 80%);
+
+/* Radio */
+$radio-size                 : 16px;
+$radio-dot-size             : 8px;
+$radio-font-size            : $font-size-smer;
+
+$radio-border-c-hover       : $brand-blue-400;
+$radio-border-c-checked     : $brand-blue-400;
+$radio-border-c-disabled    : $grey-100;
+$radio-bg-c-disabled        : $grey-50;
+$radio-dot-c-disabled       : $grey-300;
+
+$cursor-disabled            : not-allowed;
+
+$border-radius-base         : 4px;
+$border-radius-sm           : 4px;
+
+$btn-padding-smer           : 2px 10px;
+$btn-padding-sm             : 4px 12px;
+$btn-font-size-sm           : 11px;
+$btn-padding-base           : 6px 16px;
+$btn-font-size-base         : 12px;
+$btn-padding-md             : 8px 16px;
+$btn-font-size-md           : 14px;
+$btn-default-color          : $text-color;
+$btn-default-bg             : $color-white;
+$btn-default-bg-hover       : $border-color-lightest;
+$btn-default-bg-active      : $border-color-lighter;
+$btn-default-border         : $border-color-base;
+$btn-disabled-color         : $grey-300;
+$btn-disabled-bg            : $grey-50;
+
+@mixin button-size($padding, $font-size) {
+  padding: $padding;
+  font-size: $font-size;
+}
+
+/* Tabs */
+$tabs-border-color                   : $grey-100;
+$tabs-nav-height                     : 36px;
+$tabs-nav-height-sm                  : 32px;
+$tabs-nav-font-size                  : $font-size-base;
+$tabs-nav-font-size-sm               : $font-size-smer;
+$tabs-navigation-btn-width           : 32px;
+$tabs-navigation-color               : $text-color;
+$tabs-navigation-color-hover         : $brand-blue-500;
+$tabs-navigation-color-disabled      : $grey-400;
+
+$tabs-nav-item-padding               : 0 20px;
+$tabs-nav-item-padding-sm            : 0 16px;
+$tabs-nav-item-bg-color              : $color-white;
+$tabs-nav-item-bg-color-card         : $grey-50;
+$tabs-nav-item-icon-color            : tint($text-color, 30%);
+$tabs-nav-item-icon-color-hover      : $text-color;
+
+
+$menu-item-text-color-active         : $brand-blue-500;
+$menu-item-bg-color-active           : $brand-blue-50;
+$menu-item-bg-color-active-inline    : rgba(236, 242, 252, 0.2);
