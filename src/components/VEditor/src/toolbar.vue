@@ -10,7 +10,6 @@
 <script>
 import classNames from 'classnames'
 import emojiList from './emojiList.js'
-import { Icon, Input } from 'ant-design-vue'
 import ToolTip from '@/components/ToolTip'
 import Popover from '@/components/Popover'
 import QInput from '@/components/Input'
@@ -33,8 +32,6 @@ const EMOJI_COSTOM_HEIGHT = 74
 
 export default {
   components: {
-    Input,
-    Icon,
     ToolTip,
     Popover,
     ATabs: () => import('@/components/Tabs'),

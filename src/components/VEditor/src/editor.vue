@@ -114,18 +114,15 @@ import Quill from './quill'
 import CustomToolbar from './toolbar'
 import LinkBlot from './formats/link.js'
 import PlainClipboard from './modules/plainClipboard.js'
-import { Button, message, Modal } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 import VModal from '@/components/Modal'
 import editorMixin from './editorMixin'
-import Vue from 'vue'
 import './plugins'
 import '../style/index.less'
 import Radio from '@/components/Radio'
 import RadioGroup from '@/components/Radio/group'
 const isEqual = require('lodash/isEqual')
 const merge = require('lodash/merge')
-
-Vue.use(Modal).use(Button)
 
 const getImageSize = function (url, callback) {
   const newImage = document.createElement('img')
