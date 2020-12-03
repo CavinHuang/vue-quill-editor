@@ -88,7 +88,7 @@
       :supportFontTag="true"
     />
     <h1>插入不可编辑的文本</h1>
-    <a-button :style="{marginBottom: 10}" @click="handleInsertText">插入文本</a-button>
+    <button type="button" :style="{marginBottom: 10}" @click="handleInsertText">插入文本</button>
     <rich-text
       v-model="fontContent"
       placeholder="请输入内容oooooo"
@@ -117,9 +117,7 @@
 <script>
 // @ is an alias to /src
 import RichText from '@/components/VEditor/src/editor.vue'
-import Vue from 'vue'
-import { Button, message } from 'ant-design-vue'
-Vue.use(Button)
+import { message } from '@/components/Message/index.js'
 const advancedValues = [
   { id: '1', value: 'Manuel Neuer', team: 'Bayern Munich' },
   { id: '2', value: 'Robert Lewandowski', team: 'Bayern Munich' },

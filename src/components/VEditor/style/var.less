@@ -10,10 +10,7 @@
 // -------- 字号 -----------
 // 基础，正文
 @font-size-base         : 14px;
-// 大，大标题
-@font-size-lg           : @font-size-base + 2px;
-// 小，正文/小标题/辅助文字
-@font-size-sm           : @font-size-base - 2px;
+
 
 // -------- 行高 -----------
 // 基础
@@ -31,22 +28,15 @@
 @blue-6                 : #337eff;
 @primary-color          : @blue-6;
 // 主色经过调制后的色板
-@primary-1: tint(@primary-color, 90%);  // replace tint(@primary-color, 90%)
-@primary-2: tint(@primary-color, 80%);  // replace tint(@primary-color, 80%)
-@primary-3: tint(@primary-color, 70%);  // replace tint(@primary-color, 70%)
-@primary-4: tint(@primary-color, 60%);  // replace tint(@primary-color, 60%)
 @primary-5: tint(@primary-color, 20%);  // color used to control the text color in many active and hover states, replace tint(@primary-color, 20%)
-@primary-6: @primary-color;             // color used to control the text color of active buttons, don't use, use @primary-color
 @primary-7: shade(@primary-color, 5%);  // replace shade(@primary-color, 5%)
 
 
 // -------- 中性色 -----------
 // 中性色用于文本、背景和边框颜色，用来表现层次结构。
-@text-2                 : #222;
 @text-3                 : #333;
 @text-6                 : #666;
 @text-9                 : #999;
-@text-c                 : #ccc;
 @text-d                 : #f2f3f5;
 @text-e                 : #f7f7fa;
 
@@ -86,24 +76,7 @@
 @border-radius-sm       : 2px;
 
 // Input
-@input-height-base               : 32px;
-@input-height-lg                 : 40px;
-@input-height-sm                 : 24px;
-@input-padding-horizontal        : 12px;
-@input-padding-horizontal-base   : @input-padding-horizontal;
-@input-padding-horizontal-sm     : @input-padding-horizontal;
-@input-padding-horizontal-lg     : @input-padding-horizontal;
-@input-padding-vertical-base     : 4px;
-@input-padding-vertical-sm       : 1px;
-@input-padding-vertical-lg       : 6px;
 @input-placeholder-color         : hsv(0, 0, 75%);
-@input-color                     : @text-color;
-@input-border-color              : @border-color-base;
-@input-bg                        : #fff;
-@input-addon-bg                  : #eee;
-@input-hover-border-color        : @primary-color;
-@input-disabled-bg               : @disabled-bg;
-@input-outline-offset            : @outline-offset;
 
 // -------- 文本颜色 -----------
 // ？？需要视觉定义
@@ -132,25 +105,12 @@
 @disabled-color-dark    : fade(#fff, 35%);
 
 // -------- 轮廓 -----------
-// 轮廓是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。很少用到
-@outline-blur-size      : 0;
-@outline-width          : 2px;
-@outline-color          : @primary-color;
-@outline-offset         : 0 0;
-
-@box-shadow-active      : @outline-offset @outline-blur-size @outline-width fade(@primary-color, 20%);
-
-// RichEditor
 @richeditor-icon-hover-bg: @text-d;
 
 // -------- 表格或列表项目的背景色 -----------
 // 激活后
-@item-active-bg         : #f7f8fa;
 // 鼠标移入
 @item-hover-bg          : #f7f8fa;
-// 斑马纹颜色
-@item-striped-bg        : #fafbfc;
-
 // -------- 链接 -----------
 // 默认色
 @link-color             : @primary-color;

@@ -109,6 +109,7 @@ $color-primary              : #6190E8;
 
 $font-size-base             : 14px;
 $font-size-smer             : 12px;
+$font-size-sm               : 13px;
 
 $brand-blue-50              : #ECF2FC;
 $brand-blue-400             : #79A1EB;
@@ -118,8 +119,16 @@ $grey-100                   : #ECECEC;
 $grey-50                    : #F7F7F7;
 $grey-400                   : #C9C9C9;
 $grey-300                   : #D2D2D2;
-$border-color-base          : #C5D9E8;
 
+$green-300                  : #5ADD94;
+
+$red-300                    : #FF8080;
+
+$yellow-300                 : #FFD96B;
+
+$blue-300                   : #A1BFFC;
+
+$border-color-base          : #C5D9E8;
 $border-color-lighter       : tint($border-color-base, 50%);
 $border-color-lightest      : tint($border-color-base, 80%);
 
@@ -181,3 +190,19 @@ $tabs-nav-item-icon-color-hover      : $text-color;
 $menu-item-text-color-active         : $brand-blue-500;
 $menu-item-bg-color-active           : $brand-blue-50;
 $menu-item-bg-color-active-inline    : rgba(236, 242, 252, 0.2);
+
+/* Message */
+$message-padding            : 6px 16px;
+$message-font-size          : $font-size-sm;
+$message-bg-color           : $color-white;
+$message-box-shadow         : 0 1px 8px rgba(0, 0, 0, .15);
+
+$message-icon-color-success  : $green-300;
+$message-icon-color-error    : $red-300;
+$message-icon-color-warning  : $yellow-300;
+$message-icon-color-info     : $blue-300;
+$message-icon-color-loading  : $blue-300;
+
+$zindex-message             : 1010;
+$zindex-popover             : 1020;
+$zindex-tooltip             : 1050;
