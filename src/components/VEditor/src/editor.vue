@@ -198,11 +198,8 @@ export default {
       default: 'fishd-richeditor'
     },
     onClickToolbarBtn: {
-      type: Function,
-      default: () => {
-        return function () {
-        }
-      }
+      type: [Boolean, Function],
+      default: false
     },
     onSelectionChange: {
       type: Function,
@@ -762,7 +759,7 @@ export default {
       return null
     },
     handleLinkModalOk () {
-      const el = this.$refs.linkModalInputRef.$el
+      const el = this.$refs.linkModalInputRef
       const val = el.value.trim()
 
       if (val) {

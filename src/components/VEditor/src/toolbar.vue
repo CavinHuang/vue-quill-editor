@@ -189,8 +189,6 @@ export default {
       }
     }
   },
-  created () {
-  },
   render () {
     const { toolbar } = this
     return <div ref="toolbarCtner">
