@@ -12,23 +12,7 @@ import classNames from 'classnames'
 import emojiList from './emojiList.js'
 import ToolTip from '@/components/ToolTip'
 import Popover from '@/components/Popover'
-import QInput from '@/components/Input'
-
-const COLORS = [
-  '#E53333', '#E56600', '#FF9900',
-  '#64451D', '#DFC5A4', '#FFE500',
-  '#009900', '#006600', '#99BB00',
-  '#B8D100', '#60D978', '#00D5FF',
-  '#337FE5', '#003399', '#4C33E5',
-  '#9933E5', '#CC33E5', '#EE33EE',
-  '#ffffff', '#cccccc', '#999999',
-  '#666666', '#333333', '#000000'
-]
-
-const EMOJI_DEFAULT_WIDTH = 24
-const EMOJI_DEFAULT_HEIGHT = 24
-const EMOJI_COSTOM_WIDTH = 74
-const EMOJI_COSTOM_HEIGHT = 74
+import { COLORS, EMOJI_DEFAULT_WIDTH, EMOJI_DEFAULT_HEIGHT, EMOJI_COSTOM_WIDTH, EMOJI_COSTOM_HEIGHT } from './config'
 
 export default {
   components: {
@@ -36,7 +20,7 @@ export default {
     Popover,
     ATabs: () => import('@/components/Tabs'),
     ATabPane: () => import('@/components/Tabs/tab-pane'),
-    QInput
+    QInput: import('@/components/Input')
   },
   props: {
     iconPrefix: {
@@ -102,6 +86,21 @@ export default {
     }
   },
   data () {
+    const generateColorItem = () => {
+      const colors = []
+      COLORS.forEach(function (color, index) {
+        colors.push(
+          <button
+            class="background-item"
+            key={'default_background_' + index}
+            value={color}
+            title={color}
+            style={{ backgroundColor: color }}
+          />
+        )
+      })
+      return colors
+    }
     return {
       className: '',
       getPopupContainer: () => document.body,
@@ -113,36 +112,8 @@ export default {
       lineHeightPopoverVisible: false,
       curLineHeight: null,
       curIVSearchValue: '',
-      defaultBackgrounds: () => {
-        const colors = []
-        COLORS.forEach(function (color, index) {
-          colors.push(
-            <button
-              class="background-item"
-              key={'default_background_' + index}
-              value={color}
-              title={color}
-              style={{ backgroundColor: color }}
-            />
-          )
-        })
-        return colors
-      },
-      defaultColors: () => {
-        const colors = []
-        COLORS.forEach(function (color, index) {
-          colors.push(
-            <button
-              class="color-item"
-              key={'default_background_' + index}
-              value={color}
-              title={color}
-              style={{ backgroundColor: color }}
-            />
-          )
-        })
-        return colors
-      },
+      defaultBackgrounds: generateColorItem,
+      defaultColors: generateColorItem,
       defaultEmojis: () => {
         const data = emojiList
         const colSize = 10

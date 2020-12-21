@@ -23,7 +23,7 @@ export default {
   data () {
     return {
       message: '',
-      duration: 300000,
+      duration: 3000,
       type: 'info',
       icon: '',
       visible: false,
